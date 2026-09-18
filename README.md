@@ -1,197 +1,196 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/pingequalab/sigroam-wardriving/main/screenshots/dashboard.png" width="420" alt="SigRoam dashboard on Flipper Zero">
+</p>
+
 <h1 align="center">SigRoam</h1>
 
 <p align="center">
-  <b>Receive-only dual-band wardriving firmware for Scout Lite.</b><br>
-  The scanner on the ESP32-C5. The Flipper is the control head.
+  <b>Receive-only wardriving firmware for Flipper Zero.</b><br>
+  Developed against <a href="https://www.pingequa.com/products/scout-lite">Scout Lite</a>
+  · by <a href="https://www.pingequa.com">PINGEQUA Lab</a>
 </p>
 
 <p align="center">
+  <a href="https://www.pingequa.com/products/scout-lite"><img src="https://img.shields.io/badge/buy-Scout%20Lite-orange" alt="Buy Scout Lite"></a>
+  <a href="https://www.pingequa.com"><img src="https://img.shields.io/badge/site-pingequa.com-lightgrey" alt="pingequa.com"></a>
+  <img src="https://img.shields.io/badge/host-Flipper%20Zero-blue" alt="Host: Flipper Zero">
   <img src="https://img.shields.io/badge/radio-receive--only-brightgreen" alt="Receive-only">
-  <img src="https://img.shields.io/badge/source-closed-lightgrey" alt="Closed source">
-  <img src="https://img.shields.io/badge/status-not%20v1.0-yellow" alt="Not v1.0">
-  <img src="https://img.shields.io/badge/board-Scout%20Lite-orange" alt="Scout Lite">
-  <img src="https://img.shields.io/badge/companion-FAP%20v0.4-blue" alt="Companion FAP v0.4">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT"></a>
+  <a href="https://go.pingequa.com/sr1g"><img src="https://img.shields.io/badge/link-go.pingequa.com%2Fsr1g-lightgrey" alt="go.pingequa.com/sr1g"></a>
+</p>
+
+<p align="center">
+  <a href="https://www.pingequa.com/products/scout-lite"><b>Get Scout Lite</b></a>
+  ·
+  <a href="https://www.pingequa.com/blogs/guides-tutorials/wardriving-explained-flipper-zero"><b>How Flipper wardriving works</b></a>
+  ·
+  <a href="https://go.pingequa.com/sr1g"><b>go.pingequa.com/sr1g</b></a>
 </p>
 
 ---
 
-**SigRoam** is dedicated scanner firmware for the PINGEQUA **Scout Lite** board
-(ESP32-C5 + GPS + microSD). It enumerates 2.4 / 5 GHz Wi-Fi, observes BLE,
-tags each record with a GNSS fix, and writes [WiGLE](https://wigle.net)-ready
-CSV to the onboard card. The Flipper Zero does not scan: it starts and stops
-the session and shows what the scanner reports.
+The Flipper Zero has **no Wi-Fi radio**. Wardriving on this platform is always
+a split: a GPIO module does the scan, GNSS, and log; the Flipper is the
+control head.
 
-This repository publishes the **production app image**. Source is not here.
-The current tag is the first eight hex digits of that image’s SHA-256.
+**SigRoam** is PINGEQUA Lab’s stack for that split — a dedicated scanner on
+the module, a dedicated Flipper app, one job. This repository is the
+**scanner firmware**. It is developed for Flipper Zero and built on
+**[Scout Lite](https://www.pingequa.com/products/scout-lite)**.
 
-This is **not** product v1.0. A download is not a claim that the board is
+This is **not** product v1.0. A download is not a claim that the device is
 field-ready.
 
-Factory Scout Lite units ship **[ESP32 Marauder](https://github.com/justcallmekoko/ESP32Marauder)**.
-Flashing SigRoam is optional. The Flipper companion
-([SigRoam Wardriving v0.4](https://github.com/pingequalab/sigroam-wardriving/releases/tag/v0.4))
-speaks the Marauder serial dialect either way.
+## Purpose
+
+A Flipper wardrive should be a **survey**: dual-band Wi-Fi, BLE observation,
+a GNSS tag, a WiGLE CSV on the module. It should not be an attack menu with
+a wardrive command in it.
 
 | | |
 |---|---|
-| **Product** | SigRoam |
-| **Board** | Scout Lite — not “SigRoam Lite” |
-| **SoC** | ESP32-C5-WROOM-1U-N8R8 · 2.4 + 5 GHz |
+| **Host** | Flipper Zero — start / stop, live Dash / GPS / Sess, raw UART |
+| **Scanner** | This firmware — 2.4 / 5 GHz passive scan, BLE, GNSS gate, microSD |
+| **Board** | [Scout Lite](https://www.pingequa.com/products/scout-lite) — C5 + L86 + microSD |
+| **Never** | Deauth, handshake, evil twin, SoftAP, beacon spam, `esp_wifi_80211_tx` |
+
+Receive-only is a product rule. It will not grow attack features.
+
+## Flipper wardriving compared
+
+Flipper cannot wardrive Wi-Fi by itself. Native GPS is location only.
+[Subdriving](https://www.pingequa.com/blogs/guides-tutorials/what-is-subdriving-flipper-zero)
+is Sub-GHz, not Wi-Fi. Every Wi-Fi wardrive on this platform is an **app +
+module** pair.
+
+### Flipper apps
+
+| | **SigRoam** | **[ESP32] WiFi Marauder** | **Ghost ESP** |
+|---|---|---|---|
+| Job | Survey dashboard | Full Marauder console | Pentest console |
+| Wardrive | The whole app | One menu (`Wardrive`) | One feature among many |
+| Attack controls | None | Deauth, portal, capture, … | Deauth, portal, spam, … |
+| Live survey | Dash / Strm / GPS / Sess | Console / sniffer screens | Ghost menus |
+| Official FW | Yes — FAP v0.4 | Lab / CFW bundle | Companion FAP |
+| Scanner it drives | This image, or factory Marauder | Marauder on the module | GhostESP on the module |
+
+### Flipper modules (Wi-Fi wardrive)
+
+| | **Scout Lite + SigRoam** | **Wi-Fi Devboard** | **C5 multi-radio** (Apex 5, Rabbit-Labs, …) |
+|---|---|---|---|
+| Chip | ESP32-C5 2.4 + 5 GHz | ESP32-S2 **2.4 only** | ESP32-C5 2.4 + 5 GHz |
+| GNSS | Onboard L86-M33 | Optional add-on | Usually onboard |
+| microSD | Onboard | Optional breakout | Usually onboard |
+| Extra radios | None | None | Sub-GHz / nRF24 typical |
+| Module firmware | **SigRoam** (this) or factory toolkit | Marauder `_flipper.bin` | Marauder / GhostESP |
+| Flipper UI | SigRoam FAP | Marauder companion | Marauder or Ghost companion |
+| Built for | Wardrive only | Toolkit | Toolkit + extra radios |
+
+Scout Lite is the only board this image supports. Other C5 modules are not
+a drop-in.
+
+Sources, 2026-09-18:
+[Marauder × Flipper wiki](https://github.com/justcallmekoko/ESP32Marauder/wiki/Flipper-Zero) (2026-09-15);
+[Flipper Lab · WiFi Marauder](https://lab.flipper.net/apps/esp32_wifi_marauder);
+[GhostESP Flipper companion](https://github.com/GhostESP-Revival/GhostESP-FlipperCompanion);
+[Wi-Fi Devboard flash notes](https://flash.pingequa.com/devices/flipper-wifi-devboard-marauder) (2026-09-05);
+[C5 module roundup](https://www.pingequa.com/blogs/guides-tutorials/scout-lite-vs-apex-5-flipper-wardriving) (updated 2026-08-03).
+
+## Stack (Flipper + Scout Lite)
+
+```
+  Flipper Zero                      Scout Lite
+  ┌──────────────────────┐          ┌──────────────────────────┐
+  │ SigRoam FAP v0.4     │  UART    │ SigRoam firmware (this)  │
+  │ Dash · GPS · Sess    │◄────────►│ C5 · L86 · microSD       │
+  └──────────────────────┘  13/14   └──────────────────────────┘
+```
+
+| | |
+|---|---|
+| **Board** | [Scout Lite](https://www.pingequa.com/products/scout-lite) |
+| **SoC** | ESP32-C5-WROOM-1U-N8R8 |
 | **GNSS** | Quectel L86-M33 (GPS / GLONASS / Galileo) |
-| **Log** | microSD · WigleWifi CSV |
-| **Host** | Flipper Zero · GPIO UART 13/14 · 5 V on pin 1 |
-| **Wire handshake** | `Firmware: Marauder` (eight bytes, unchanged) |
+| **Log** | Module microSD · WigleWifi CSV + session manifest |
+| **Pins** | Flipper 13/14 UART · 5 V on pin 1 |
+| **Handshake** | `Firmware: Marauder` — FAP v0.4 pairs without a protocol break |
 
-## Why this firmware exists
+Factory Scout Lite still ships a general toolkit image. This flash is
+**optional**. Do not mix this image with a different FAP.
 
-Marauder, GhostESP, and Bruce are ESP32 wireless toolkits. Wardriving sits
-next to deauth, handshake capture, and rogue AP. SigRoam is the other cut:
-**one job, receive-only**, on Scout Lite’s C5 + GNSS + microSD, talking to a
-Flipper with a 2 KB serial buffer.
+On the Flipper: **Settings → System → Log Device → Off**.
 
-| | **SigRoam** | **Marauder** | **GhostESP / Bruce** | **WiGLE app** |
-|---|---|---|---|---|
-| Job | Dual-band survey + GNSS log | Wi-Fi / BT toolkit | Red-team multi-tool | Phone wardrive |
-| Attack TX | None | Deauth, handshake, rogue AP | Deauth, portal, spam | None |
-| Radio | ESP32-C5 2.4 + 5 GHz | Many chips, incl. C5 | Board-dependent ESP32 | Phone Wi-Fi |
-| GNSS + SD | Onboard Scout Lite | Optional add-ons | Board-dependent | Phone GNSS |
-| Host | Flipper FAP | App / CLI / display | Flipper / WebUI / display | Phone |
-| Source | Closed (binaries here) | Open | Open | Closed app |
-
-Fetched 2026-09-18:
-[Marauder](https://github.com/justcallmekoko/ESP32Marauder) (“offensive and defensive tools”);
-C5 app offset `0x10000` — [wiki 2026-09-15](https://github.com/justcallmekoko/ESP32Marauder/wiki/update-firmware);
-[GhostESP](https://github.com/GhostESP-Revival/GhostESP);
-[Bruce](https://github.com/BruceDevices/firmware).
-Laptop-class sniffing is still [Kismet](https://www.kismetwireless.net/).
-
-Versus Marauder on the same board:
-
-- **Passive scan** — no probe-request active scan, no `esp_wifi_80211_tx`
-- **GPS-gated CSV** — a microSD row is committed only with a valid fix at
-  observation time. Indoor no-fix does not write `0.0000000` (Null Island).
-  That is design, not a fault
-- **UART is the live view** — rate-limited for the Flipper RX buffer. The
-  card is the record. A GPS query does not abort a running survey
-- **Session sidecar** — CSV plus a manifest with drop counters
-- **Same six host commands** — `info` · `wardrive` · `wardrive -serial` ·
-  `stopscan` · `gpsdata` · `wardrivepoi`
-
-## Release
+## Now
 
 | | |
 |---|---|
-| **Title** | [SigRoam 0.4 for Scout Lite](https://github.com/pingequalab/sigroam-firmware/releases/tag/app-249eda5e) |
-| **Tag** | `app-249eda5e` (first eight hex of the image SHA-256 — **not** v1.0) |
-| **File** | `sigroam_lite.bin` · **1398400** B |
+| **Release** | [SigRoam 0.4 for Scout Lite](https://github.com/pingequalab/sigroam-firmware/releases/tag/app-249eda5e) |
+| **Tag** | `app-249eda5e` (image SHA prefix — **not** v1.0) |
+| **File** | `sigroam_lite.bin` · 1398400 B |
 | **SHA-256** | `249eda5e681368a57fb8d998e9926fe10875af2077bcbc6a9e30a68554adf502` |
-| **Write** | App only at **`0x20000`** (`ota_0` on the SigRoam 8 MB layout) |
-| **Companion** | [SigRoam Wardriving v0.4](https://github.com/pingequalab/sigroam-wardriving/releases/tag/v0.4) |
-| **Factory** | ESP32 Marauder — leave it if you want the toolkit |
-| **Not in this image** | Product v1.0 · on-device WiGLE HTTPS upload · merged first-install for stock Marauder |
+| **Write** | App only at **`0x20000`** |
+| **FAP** | [sigroam-0.4.fap](https://github.com/pingequalab/sigroam-wardriving/releases/tag/v0.4) · `74e2f11a0543bd482c1d0539954588df1fb177d8f16ecc65bc14d573c44c219b` |
 
-Pairing with FAP v0.4 is verified. That is not “ready for the field.”
+Far enough to publish the **app image**. Not a finished product.
 
 ```text
 shasum -a 256 sigroam_lite.bin
 # 249eda5e681368a57fb8d998e9926fe10875af2077bcbc6a9e30a68554adf502
 ```
 
-## Pair with FAP v0.4
+## Next (Flipper)
 
-| | |
-|---|---|
-| **App** | [sigroam-wardriving v0.4](https://github.com/pingequalab/sigroam-wardriving/releases/tag/v0.4) |
-| **File** | `sigroam-0.4.fap` |
-| **SHA-256** | `74e2f11a0543bd482c1d0539954588df1fb177d8f16ecc65bc14d573c44c219b` |
-| **Handshake** | `Firmware: Marauder` — Probe still keys off those eight bytes |
+Scout Lite stays the reference Flipper module. The Flipper stays the host.
+Receive-only stays.
 
-Do not mix this image with a different FAP, or the v0.4 FAP with a different
-image. On the Flipper, set **Settings → System → Log Device** to **Off**
-(pins 13/14 are shared with the system log).
+Public direction — not a ship date, not v1.0:
+
+1. **Keep Flipper first.** This firmware is a Flipper scanner, not a
+   standalone gadget OS.
+2. **Keep Scout Lite first.** New Flipper modules, if any, speak this
+   scanner. They do not fork a second capture stack.
+3. **Keep the survey UI on the Flipper.** FAP remains the field dashboard
+   (Official firmware included).
+4. **Finish the survey loop.** Today you pull the Scout Lite card and
+   upload at [WiGLE](https://wigle.net). On-board upload is not in this image.
+5. **Install path.** A browser flasher for *this* image is not published
+   yet. The current Scout Lite web page recovers the factory toolkit, not
+   SigRoam.
+
+Unlisted boards are unsupported.
 
 ## Flash
 
-This file is the **application partition**, not a merged factory image.
-
-| Layout | App offset | Use |
-|---|---|---|
-| **SigRoam** (this image) | **`0x20000`** | App-slot update on a board already on the SigRoam partition table |
-| **Marauder C5** | `0x10000` | Factory Scout Lite / Marauder installer — **not this file** |
-
-Writing this bin at `0x10000`, or flashing it from the Marauder web page,
-will not migrate a stock board. Converting a factory Marauder layout is not
-a one-file flash in this repository.
-
-**Unplug the Flipper** before connecting Scout Lite USB-C.
+Application partition only (`ota_0` at `0x20000`). Not a merged factory
+image. **Unplug the Flipper** before Scout Lite USB-C.
 
 ```bash
 esptool --chip esp32c5 -p PORT -b 460800 write-flash 0x20000 sigroam_lite.bin
 ```
 
-`PORT` is the Scout Lite USB-C port (`/dev/cu.usbmodem*` on macOS, `COMx` on
-Windows, `/dev/ttyACM*` on Linux). After the write, unplug and reseat USB-C,
-or hit reset, before mounting the board on the Flipper.
+USB-C flash and Flipper 5 V survey are exclusive. GPIO 13/14 is USB **or**
+GNSS, not both. Do not power the scanner from Flipper pin 9.
 
-To go back to Marauder, use
+Factory recover:
 [flash.pingequa.com/devices/scout-lite](https://flash.pingequa.com/devices/scout-lite)
-(Marauder at `0x10000`). Do not then write this SigRoam app onto that layout.
-
-## Two setups, never together
-
-Scout Lite USB-C and Flipper 5 V OTG are physically exclusive. GPIO 13/14 are
-muxed: USB data **or** GNSS UART, not both.
-
-| | Flash / USB-C | Survey / Flipper |
-|---|---|---|
-| Scout USB-C | Connected | **Unplugged** |
-| Flipper GPIO + 5 V | **Unplugged** | Mounted |
-| GPIO 13/14 | USB D+/D− | GNSS |
-| GPS | Off | On |
-
-Plug USB-C while the Flipper is mounted, or mount the Flipper while USB-C is
-plugged in, and you lose GNSS, the Flipper link, or both. That is expected.
-
-Do not power the scanner from Flipper pin 9 (3.3 V).
-
-## What it deliberately does not do
-
-Receive-only is a product rule, not a missing feature:
-
-- deauthentication / disassociation
-- WPA handshake / PMKID capture
-- evil twin, karma, rogue AP, SoftAP
-- beacon spam / BLE spam
-- password cracking
-- `WIFI_MODE_AP` / `APSTA` / `esp_wifi_80211_tx`
-
-If you need those, keep factory Marauder — or use GhostESP / Bruce. This
-image will not grow them.
-
-## Survey log
-
-CSV is written on the **Scout Lite** microSD (FAT32), not on the Flipper card.
-The FAP stores settings only. Upload the CSV at [wigle.net](https://wigle.net).
-
-This image does **not** associate to a home AP and POST the file for you.
-Pull the card.
+(toolkit image at `0x10000` — will not install SigRoam).
 
 ## License
 
-The files in this repository are MIT. See [LICENSE](LICENSE).
-The scanner source is not published. The binary is provided as-is.
+Repository files: [MIT](LICENSE). Scanner source is not published.
+Binary as-is.
 
 Finished Scout Lite boards are intentional radiators under FCC Part 15 / SDoC.
-Educational and lawful network research only. Scan networks you own or are
-explicitly authorized to assess.
+Educational and lawful network research only.
 
-## Links
+---
 
-- [SigRoam Wardriving (Flipper app)](https://github.com/pingequalab/sigroam-wardriving)
-- [Scout Lite (board)](https://github.com/pingequalab/scout-lite)
-- [PINGEQUA](https://pingequa.com)
-- [ESP32 Marauder](https://github.com/justcallmekoko/ESP32Marauder)
-- [WiGLE](https://wigle.net)
+<p align="center">
+  <a href="https://www.pingequa.com/products/scout-lite"><b>Get Scout Lite — pingequa.com</b></a><br>
+  <a href="https://www.pingequa.com/blogs/guides-tutorials/how-to-first-wardrive-flipper-zero-scout-lite">First wardrive</a>
+  ·
+  <a href="https://www.pingequa.com/blogs/guides-tutorials/flipper-zero-wardriving-app-sigroam">SigRoam on Flipper</a>
+  ·
+  <a href="https://go.pingequa.com/sr1g">go.pingequa.com/sr1g</a>
+</p>
 
-**PINGEQUA Lab** — hardware and firmware for RF, GPS, and field survey.
+<p align="center"><b>PINGEQUA Lab</b> — Flipper survey hardware and firmware.</p>

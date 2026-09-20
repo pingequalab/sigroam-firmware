@@ -123,19 +123,23 @@ On the Flipper: **Settings → System → Log Device → Off**.
 
 | | |
 |---|---|
-| **Release** | [SigRoam 0.4 for Scout Lite](https://github.com/pingequalab/sigroam-firmware/releases/tag/app-249eda5e) |
-| **Tag** | `app-249eda5e` (image SHA prefix — **not** v1.0) |
-| **File** | `sigroam_lite.bin` · 1398400 B |
-| **SHA-256** | `249eda5e681368a57fb8d998e9926fe10875af2077bcbc6a9e30a68554adf502` |
+| **Version** | **0.4** (pairs with FAP v0.4; **not** product v1.0) |
+| **Release** | [SigRoam 0.4 for Scout Lite](https://github.com/pingequalab/sigroam-firmware/releases/tag/v0.4) |
+| **Tag** | `v0.4` (formal) · `app-d4a21243` (app SHA prefix) |
+| **File** | `sigroam_lite.bin` · 1399424 B |
+| **SHA-256** | `d4a212438d5b34c5853646de22506ff8a939e36c960b538d26bd4b6d26663fae` |
 | **Write** | App only at **`0x20000`** |
-| **FAP** | [sigroam-0.4.fap](https://github.com/pingequalab/sigroam-wardriving/releases/tag/v0.4) · `74e2f11a0543bd482c1d0539954588df1fb177d8f16ecc65bc14d573c44c219b` |
+| **FAP** | [sigroam-0.4.fap](https://github.com/pingequalab/sigroam-wardriving/releases/tag/v0.4) |
+| **Flasher** | [flash.pingequa.com/devices/scout-lite](https://flash.pingequa.com/devices/scout-lite) |
 
-Far enough to publish the **app image**. Not a finished product.
+UART handshake is still `Firmware: Marauder` / `Version: v1.14.1-sigroam-0`. Far enough to publish the **app image**. Not a finished product.
 
 ```text
 shasum -a 256 sigroam_lite.bin
-# 249eda5e681368a57fb8d998e9926fe10875af2077bcbc6a9e30a68554adf502
+# d4a212438d5b34c5853646de22506ff8a939e36c960b538d26bd4b6d26663fae
 ```
+
+Previous app image (also labeled 0.4): tag `app-249eda5e`, 1398400 B, SHA-256 `249eda5e681368a57fb8d998e9926fe10875af2077bcbc6a9e30a68554adf502`.
 
 ## Next (Flipper)
 
@@ -152,9 +156,7 @@ Public direction — not a ship date, not v1.0:
    (Official firmware included).
 4. **Finish the survey loop.** Today you pull the Scout Lite card and
    upload at [WiGLE](https://wigle.net). On-board upload is not in this image.
-5. **Install path.** A browser flasher for *this* image is not published
-   yet. The current Scout Lite web page recovers the factory toolkit, not
-   SigRoam.
+5. **Install path.** Browser flasher: [flash.pingequa.com/devices/scout-lite](https://flash.pingequa.com/devices/scout-lite). SigRoam 0.4 is first in the picker.
 
 Unlisted boards are unsupported.
 

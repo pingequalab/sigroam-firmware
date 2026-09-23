@@ -143,6 +143,19 @@ shasum -a 256 sigroam_lite.bin
 
 Previous app image, v0.4: tag `v0.4` / `app-d4a21243`, 1399424 B, SHA-256 `d4a212438d5b34c5853646de22506ff8a939e36c960b538d26bd4b6d26663fae`. Older app image: tag `app-249eda5e`, 1398400 B, SHA-256 `249eda5e681368a57fb8d998e9926fe10875af2077bcbc6a9e30a68554adf502`.
 
+## Upload
+
+A sealed survey file can go to WiGLE from the scanner. That step does not
+use a computer.
+
+The file is the WigleWifi CSV from the survey: 2.4 GHz, 5 GHz, and BLE
+rows. A successful upload keeps WiGLE's transaction id with that file.
+
+HTTP 429 is WiGLE's daily file limit. The round stops and is not marked
+done. On the Flipper, Upload shows `WiGLE busy`. The card can still be
+copied and sent by hand at [wigle.net](https://wigle.net). A hand upload
+from a computer is a different path.
+
 ## Next (Flipper)
 
 Scout Lite stays the reference Flipper module. The Flipper stays the host.

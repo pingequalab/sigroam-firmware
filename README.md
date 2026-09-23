@@ -152,9 +152,12 @@ The file is the WigleWifi CSV from the survey: 2.4 GHz, 5 GHz, and BLE
 rows. A successful upload keeps WiGLE's transaction id with that file.
 
 HTTP 429 is WiGLE's daily file limit. The round stops and is not marked
-done. On the Flipper, Upload shows `WiGLE busy`. The card can still be
-copied and sent by hand at [wigle.net](https://wigle.net). A hand upload
-from a computer is a different path.
+done. On the Flipper, Upload shows `WiGLE busy`. A profile check with no
+HTTP status shows `No reply`. WiGLE documents `GET /api/v2/profile/user`
+as 200 or 500 when it answers
+([API 3.1](https://api.wigle.net/swagger)). 401 or 403 shows `Key rejected`.
+The card can still be copied and sent by hand at [wigle.net](https://wigle.net).
+A hand upload from a computer is a different path.
 
 ## Next (Flipper)
 

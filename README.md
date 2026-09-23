@@ -70,7 +70,7 @@ module** pair.
 | Wardrive | The whole app | One menu (`Wardrive`) | One feature among many |
 | Attack controls | None | Deauth, portal, capture, … | Deauth, portal, spam, … |
 | Live survey | Dash / Strm / GPS / Sess | Console / sniffer screens | Ghost menus |
-| Official FW | Yes — FAP v0.4 | Lab / CFW bundle | Companion FAP |
+| Official FW | Yes — FAP v0.5 | Lab / CFW bundle | Companion FAP |
 | Scanner it drives | This image, or factory Marauder | Marauder on the module | GhostESP on the module |
 
 ### Flipper modules (Wi-Fi wardrive)
@@ -100,7 +100,7 @@ Sources, 2026-09-18:
 ```
   Flipper Zero                      Scout Lite
   ┌──────────────────────┐          ┌──────────────────────────┐
-  │ SigRoam FAP v0.4     │  UART    │ SigRoam firmware (this)  │
+  │ SigRoam FAP v0.5     │  UART    │ SigRoam firmware (this)  │
   │ Dash · GPS · Sess    │◄────────►│ C5 · L86 · microSD       │
   └──────────────────────┘  13/14   └──────────────────────────┘
 ```
@@ -112,7 +112,7 @@ Sources, 2026-09-18:
 | **GNSS** | Quectel L86-M33 (GPS / GLONASS / Galileo) |
 | **Log** | Module microSD · WigleWifi CSV + session manifest |
 | **Pins** | Flipper 13/14 UART · 5 V on pin 1 |
-| **Handshake** | `Firmware: Marauder` — FAP v0.4 pairs without a protocol break |
+| **Handshake** | `Firmware: Marauder` — FAP v0.5 pairs without a protocol break |
 
 Factory Scout Lite still ships a general toolkit image. This flash is
 **optional**. Do not mix this image with a different FAP.
@@ -123,23 +123,25 @@ On the Flipper: **Settings → System → Log Device → Off**.
 
 | | |
 |---|---|
-| **Version** | **0.4** (pairs with FAP v0.4; **not** product v1.0) |
-| **Release** | [SigRoam 0.4 for Scout Lite](https://github.com/pingequalab/sigroam-firmware/releases/tag/v0.4) |
-| **Tag** | `v0.4` (formal) · `app-d4a21243` (app SHA prefix) |
-| **File** | `sigroam_lite.bin` · 1399424 B |
-| **SHA-256** | `d4a212438d5b34c5853646de22506ff8a939e36c960b538d26bd4b6d26663fae` |
-| **Write** | App only at **`0x20000`** |
-| **FAP** | [sigroam-0.4.fap](https://github.com/pingequalab/sigroam-wardriving/releases/tag/v0.4) |
+| **Version** | **0.5** (pairs with FAP v0.5; **not** product v1.0) |
+| **Release** | [SigRoam 0.5 for Scout Lite](https://github.com/pingequalab/sigroam-firmware/releases/tag/v0.5) |
+| **Tag** | `v0.5` (formal) · `app-13e13033` (app SHA prefix) |
+| **File** | `sigroam_lite.bin` · 1638160 B |
+| **SHA-256** | `13e13033ad2f124b6edb4c599b99e10fb576872964169ea627fb8b320ea54b7c` |
+| **Write** | Bootloader, partition table, and otadata are the v0.4 bytes. The new file is the app at **`0x20000`**. |
+| **FAP** | [sigroam-0.5.fap](https://github.com/pingequalab/sigroam-wardriving/releases/tag/v0.5) |
 | **Flasher** | [flash.pingequa.com/devices/scout-lite](https://flash.pingequa.com/devices/scout-lite) |
 
-UART handshake is still `Firmware: Marauder` / `Version: v1.14.1-sigroam-0`. Far enough to publish the **app image**. Not a finished product.
+This image observes BLE and uploads a sealed WiGLE CSV from the scanner. HTTP 429 is WiGLE's daily file limit. The round stops and is not marked done.
+
+UART handshake is still `Firmware: Marauder` / `Version: v1.14.1-sigroam-0`. Not a finished product.
 
 ```text
 shasum -a 256 sigroam_lite.bin
-# d4a212438d5b34c5853646de22506ff8a939e36c960b538d26bd4b6d26663fae
+# 13e13033ad2f124b6edb4c599b99e10fb576872964169ea627fb8b320ea54b7c
 ```
 
-Previous app image (also labeled 0.4): tag `app-249eda5e`, 1398400 B, SHA-256 `249eda5e681368a57fb8d998e9926fe10875af2077bcbc6a9e30a68554adf502`.
+Previous app image, v0.4: tag `v0.4` / `app-d4a21243`, 1399424 B, SHA-256 `d4a212438d5b34c5853646de22506ff8a939e36c960b538d26bd4b6d26663fae`. Older app image: tag `app-249eda5e`, 1398400 B, SHA-256 `249eda5e681368a57fb8d998e9926fe10875af2077bcbc6a9e30a68554adf502`.
 
 ## Next (Flipper)
 
@@ -154,9 +156,10 @@ Public direction — not a ship date, not v1.0:
    scanner. They do not fork a second capture stack.
 3. **Keep the survey UI on the Flipper.** FAP remains the field dashboard
    (Official firmware included).
-4. **Finish the survey loop.** Today you pull the Scout Lite card and
-   upload at [WiGLE](https://wigle.net). On-board upload is not in this image.
-5. **Install path.** Browser flasher: [flash.pingequa.com/devices/scout-lite](https://flash.pingequa.com/devices/scout-lite). SigRoam 0.4 is first in the picker.
+4. **Survey loop.** A sealed CSV can upload from the scanner. HTTP 429
+   means WiGLE's daily file limit. You can still copy the card and upload
+   at [WiGLE](https://wigle.net).
+5. **Install path.** Browser flasher: [flash.pingequa.com/devices/scout-lite](https://flash.pingequa.com/devices/scout-lite). SigRoam 0.5 is first in the picker.
 
 Unlisted boards are unsupported.
 

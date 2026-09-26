@@ -130,7 +130,7 @@ On the Flipper: **Settings → System → Log Device → Off**.
 | **SHA-256** | `525ca563fa8379ab26bc9c43010203afcaac0ac24a54042798c6d775ebd389b8` |
 | **Write** | Bootloader, partition table, and otadata are the v0.5 bytes. The new file is the app at **`0x20000`**. |
 | **FAP** | [sigroam-0.6.fap](https://github.com/pingequalab/sigroam-wardriving/releases/tag/v0.6) and `sigroam-0.6-unleashed.fap` |
-| **Flasher** | [flash.pingequa.com/devices/scout-lite](https://flash.pingequa.com/devices/scout-lite) lists a release after that site is synced. Until then, use the GitHub release file. |
+| **Flasher** | [flash.pingequa.com/devices/scout-lite](https://flash.pingequa.com/devices/scout-lite) lists the SigRoam 0.6 browser install option. |
 
 This image observes BLE and uploads a sealed WiGLE CSV from the scanner after STOP. At boot it counts pending files once and adds a `Cfg:` line (WiGLE key present, home Wi-Fi present, home SSID) so the Flipper can show Key/Home and a pending prompt. HTTP 429 is WiGLE's daily file limit. The round stops and is not marked done.
 
@@ -147,6 +147,37 @@ Previous app image, v0.5: tag `v0.5` / `app-13e13033`, 1638160 B, SHA-256 `13e13
 
 A sealed survey file can go to WiGLE from the scanner. That step does not
 use a computer.
+
+### Set up WiGLE and upload Wi-Fi on microSD
+
+Get the API Name and API Token from your [WiGLE account](https://wigle.net/account).
+Create these four plain-text files at the **root of the Scout Lite microSD**;
+each file contains only the corresponding value:
+
+| File | Value |
+|---|---|
+| `wigle_api_name.txt` | WiGLE API Name |
+| `wigle_api_token.txt` | WiGLE API Token |
+| `home_ssid.txt` | Wi-Fi network name for uploads |
+| `home_psk.txt` | Its password; leave empty for an open network |
+
+Insert the card and restart Scout Lite. The scanner imports the settings,
+overwrites and removes the source files, and reports WiGLE key and home Wi-Fi
+presence to the [SigRoam Flipper app](https://github.com/pingequalab/sigroam-wardriving).
+If the files remain, do not assume import succeeded. Keep the credentials
+private; never include them in an issue, screenshot or log.
+
+With both settings present, stopping a survey seals and verifies its CSV, then
+automatically **attempts** to upload pending sealed files if the configured
+Wi-Fi is reachable. Keep Scout Lite powered and its card inserted until the
+Upload page reports a result. If offline, retry from the FAP Upload page when
+back in range. The scanner does not interrupt an active survey to upload or
+automatically retry merely because the home Wi-Fi becomes visible later.
+
+This SD-card setup avoids entering a Wi-Fi password through the Flipper app's
+Marauder `Join WiFi` flow. Factory Marauder can also upload directly to WiGLE,
+but it uses its own Wi-Fi setup and upload action; SigRoam's after-STOP behavior
+requires this scanner firmware and the matching FAP.
 
 The file is the WigleWifi CSV from the survey: 2.4 GHz, 5 GHz, and BLE
 rows. A successful upload keeps WiGLE's transaction id with that file.
@@ -175,7 +206,7 @@ Public direction — not a ship date, not v1.0:
 4. **Survey loop.** A sealed CSV can upload from the scanner. HTTP 429
    means WiGLE's daily file limit. You can still copy the card and upload
    at [WiGLE](https://wigle.net).
-5. **Install path.** GitHub release `v0.6`, app at `0x20000`. Browser flasher: [flash.pingequa.com/devices/scout-lite](https://flash.pingequa.com/devices/scout-lite), after that site is synced to this release.
+5. **Install path.** GitHub release `v0.6`, app at `0x20000`. Browser flasher: [flash.pingequa.com/devices/scout-lite](https://flash.pingequa.com/devices/scout-lite), with SigRoam 0.6 listed.
 
 Unlisted boards are unsupported.
 

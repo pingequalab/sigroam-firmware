@@ -6,22 +6,22 @@
 
 <p align="center">
   <b>Receive-only wardriving firmware for Flipper Zero.</b><br>
-  Developed against <a href="https://www.pingequa.com/products/scout-lite">Scout Lite</a>
-  · by <a href="https://www.pingequa.com">PINGEQUA Lab</a>
+  Developed against <a href="https://www.pingequa.com/products/scout-lite?utm_source=github&utm_medium=referral&utm_campaign=pq-scout-lite-c5&utm_content=sigroam-firmware-readme">Scout Lite</a>
+  · by <a href="https://www.pingequa.com/?utm_source=github&utm_medium=referral&utm_campaign=brand&utm_content=sigroam-firmware-readme">PINGEQUA Lab</a>
 </p>
 
 <p align="center">
-  <a href="https://www.pingequa.com/products/scout-lite"><img src="https://img.shields.io/badge/buy-Scout%20Lite-orange" alt="Buy Scout Lite"></a>
-  <a href="https://www.pingequa.com"><img src="https://img.shields.io/badge/site-pingequa.com-lightgrey" alt="pingequa.com"></a>
+  <a href="https://www.pingequa.com/products/scout-lite?utm_source=github&utm_medium=referral&utm_campaign=pq-scout-lite-c5&utm_content=sigroam-firmware-readme"><img src="https://img.shields.io/badge/buy-Scout%20Lite-orange" alt="Buy Scout Lite"></a>
+  <a href="https://www.pingequa.com/?utm_source=github&utm_medium=referral&utm_campaign=brand&utm_content=sigroam-firmware-readme"><img src="https://img.shields.io/badge/site-pingequa.com-lightgrey" alt="pingequa.com"></a>
   <img src="https://img.shields.io/badge/host-Flipper%20Zero-blue" alt="Host: Flipper Zero">
   <img src="https://img.shields.io/badge/radio-receive--only-brightgreen" alt="Receive-only">
   <a href="https://go.pingequa.com/sr1g"><img src="https://img.shields.io/badge/link-go.pingequa.com%2Fsr1g-lightgrey" alt="go.pingequa.com/sr1g"></a>
 </p>
 
 <p align="center">
-  <a href="https://www.pingequa.com/products/scout-lite"><b>Get Scout Lite</b></a>
+  <a href="https://www.pingequa.com/products/scout-lite?utm_source=github&utm_medium=referral&utm_campaign=pq-scout-lite-c5&utm_content=sigroam-firmware-readme"><b>Get Scout Lite</b></a>
   ·
-  <a href="https://www.pingequa.com/blogs/guides-tutorials/wardriving-explained-flipper-zero"><b>How Flipper wardriving works</b></a>
+  <a href="https://www.pingequa.com/blogs/guides-tutorials/wardriving-explained-flipper-zero?utm_source=github&utm_medium=referral&utm_campaign=blog-wardriving-explained-flipper-zero&utm_content=sigroam-firmware-readme"><b>How Flipper wardriving works</b></a>
   ·
   <a href="https://go.pingequa.com/sr1g"><b>go.pingequa.com/sr1g</b></a>
 </p>
@@ -35,7 +35,7 @@ control head.
 **SigRoam** is PINGEQUA Lab’s stack for that split — a dedicated scanner on
 the module, a dedicated Flipper app, one job. This repository is the
 **scanner firmware**. It is developed for Flipper Zero and built on
-**[Scout Lite](https://www.pingequa.com/products/scout-lite)**.
+**[Scout Lite](https://www.pingequa.com/products/scout-lite?utm_source=github&utm_medium=referral&utm_campaign=pq-scout-lite-c5&utm_content=sigroam-firmware-readme)**.
 
 This is **not** product v1.0. A download is not a claim that the device is
 field-ready.
@@ -50,7 +50,7 @@ a wardrive command in it.
 |---|---|
 | **Host** | Flipper Zero — start / stop, live Dash / GPS / Sess, raw UART |
 | **Scanner** | This firmware — 2.4 / 5 GHz passive scan, BLE, GNSS gate, microSD |
-| **Board** | [Scout Lite](https://www.pingequa.com/products/scout-lite) — C5 + L86 + microSD |
+| **Board** | [Scout Lite](https://www.pingequa.com/products/scout-lite?utm_source=github&utm_medium=referral&utm_campaign=pq-scout-lite-c5&utm_content=sigroam-firmware-readme) — C5 + L86 + microSD |
 | **Never** | Deauth, handshake, evil twin, SoftAP, beacon spam, `esp_wifi_80211_tx` |
 
 Receive-only is a product rule. It will not grow attack features.
@@ -58,7 +58,7 @@ Receive-only is a product rule. It will not grow attack features.
 ## Flipper wardriving compared
 
 Flipper cannot wardrive Wi-Fi by itself. Native GPS is location only.
-[Subdriving](https://www.pingequa.com/blogs/guides-tutorials/what-is-subdriving-flipper-zero)
+[Subdriving](https://www.pingequa.com/blogs/guides-tutorials/what-is-subdriving-flipper-zero?utm_source=github&utm_medium=referral&utm_campaign=blog-what-is-subdriving-flipper-zero&utm_content=sigroam-firmware-readme)
 is Sub-GHz, not Wi-Fi. Every Wi-Fi wardrive on this platform is an **app +
 module** pair.
 
@@ -93,7 +93,7 @@ Sources, 2026-09-18:
 [Flipper Lab · WiFi Marauder](https://lab.flipper.net/apps/esp32_wifi_marauder);
 [GhostESP Flipper companion](https://github.com/GhostESP-Revival/GhostESP-FlipperCompanion);
 [Wi-Fi Devboard flash notes](https://flash.pingequa.com/devices/flipper-wifi-devboard-marauder) (2026-09-05);
-[C5 module roundup](https://www.pingequa.com/blogs/guides-tutorials/scout-lite-vs-apex-5-flipper-wardriving) (updated 2026-08-03).
+[C5 module roundup](https://www.pingequa.com/blogs/guides-tutorials/scout-lite-vs-apex-5-flipper-wardriving?utm_source=github&utm_medium=referral&utm_campaign=blog-scout-lite-vs-apex-5-flipper-wardriving&utm_content=sigroam-firmware-readme) (updated 2026-08-03).
 
 ## Stack (Flipper + Scout Lite)
 
@@ -107,7 +107,7 @@ Sources, 2026-09-18:
 
 | | |
 |---|---|
-| **Board** | [Scout Lite](https://www.pingequa.com/products/scout-lite) |
+| **Board** | [Scout Lite](https://www.pingequa.com/products/scout-lite?utm_source=github&utm_medium=referral&utm_campaign=pq-scout-lite-c5&utm_content=sigroam-firmware-readme) |
 | **SoC** | ESP32-C5-WROOM-1U-N8R8 |
 | **GNSS** | Quectel L86-M33 (GPS / GLONASS / Galileo) |
 | **Log** | Module microSD · WigleWifi CSV + session manifest |
@@ -237,10 +237,10 @@ Educational and lawful network research only.
 ---
 
 <p align="center">
-  <a href="https://www.pingequa.com/products/scout-lite"><b>Get Scout Lite — pingequa.com</b></a><br>
-  <a href="https://www.pingequa.com/blogs/guides-tutorials/how-to-first-wardrive-flipper-zero-scout-lite">First wardrive</a>
+  <a href="https://www.pingequa.com/products/scout-lite?utm_source=github&utm_medium=referral&utm_campaign=pq-scout-lite-c5&utm_content=sigroam-firmware-readme"><b>Get Scout Lite — pingequa.com</b></a><br>
+  <a href="https://www.pingequa.com/blogs/guides-tutorials/how-to-first-wardrive-flipper-zero-scout-lite?utm_source=github&utm_medium=referral&utm_campaign=blog-how-to-first-wardrive-flipper-zero-scout-lite&utm_content=sigroam-firmware-readme">First wardrive</a>
   ·
-  <a href="https://www.pingequa.com/blogs/guides-tutorials/flipper-zero-wardriving-app-sigroam">SigRoam on Flipper</a>
+  <a href="https://www.pingequa.com/blogs/guides-tutorials/flipper-zero-wardriving-app-sigroam?utm_source=github&utm_medium=referral&utm_campaign=blog-flipper-zero-wardriving-app-sigroam&utm_content=sigroam-firmware-readme">SigRoam on Flipper</a>
   ·
   <a href="https://go.pingequa.com/sr1g">go.pingequa.com/sr1g</a>
 </p>

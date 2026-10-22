@@ -5,7 +5,9 @@
 <h1 align="center">SigRoam</h1>
 
 <p align="center">
-  <b>Receive-only wardriving firmware for Flipper Zero.</b><br>
+  <b>Earlier scanner image. Not the firmware on current Scout Lite boards.</b><br>
+  Current boards ship with custom Marauder. <a href="https://flash.pingequa.com/devices/scout-lite">Update the board</a>.
+  Install the SigRoam app on the Flipper from <a href="https://flash.pingequa.com/devices/flipper-sigroam">flash.pingequa.com/devices/flipper-sigroam</a>.<br>
   Developed against <a href="https://www.pingequa.com/products/scout-lite?utm_source=github&utm_medium=referral&utm_campaign=pq-scout-lite-c5&utm_content=sigroam-firmware-readme">Scout Lite</a>
   · by <a href="https://www.pingequa.com/?utm_source=github&utm_medium=referral&utm_campaign=brand&utm_content=sigroam-firmware-readme">PINGEQUA Lab</a>
 </p>
@@ -14,7 +16,6 @@
   <a href="https://www.pingequa.com/products/scout-lite?utm_source=github&utm_medium=referral&utm_campaign=pq-scout-lite-c5&utm_content=sigroam-firmware-readme"><img src="https://img.shields.io/badge/buy-Scout%20Lite-orange" alt="Buy Scout Lite"></a>
   <a href="https://www.pingequa.com/?utm_source=github&utm_medium=referral&utm_campaign=brand&utm_content=sigroam-firmware-readme"><img src="https://img.shields.io/badge/site-pingequa.com-lightgrey" alt="pingequa.com"></a>
   <img src="https://img.shields.io/badge/host-Flipper%20Zero-blue" alt="Host: Flipper Zero">
-  <img src="https://img.shields.io/badge/radio-receive--only-brightgreen" alt="Receive-only">
   <a href="https://go.pingequa.com/sr1g"><img src="https://img.shields.io/badge/link-go.pingequa.com%2Fsr1g-lightgrey" alt="go.pingequa.com/sr1g"></a>
 </p>
 
@@ -38,7 +39,10 @@ the module, a dedicated Flipper app, one job. This repository is the
 **[Scout Lite](https://www.pingequa.com/products/scout-lite?utm_source=github&utm_medium=referral&utm_campaign=pq-scout-lite-c5&utm_content=sigroam-firmware-readme)**.
 
 This is **not** product v1.0. A download is not a claim that the device is
-field-ready.
+field-ready. Do not flash the file below onto a current board. This image's
+app address is `0x20000`, inside the shipping firmware's app partition at
+`0x10000`. That write corrupts the board. Wardrive on the shipping firmware
+transmits while it hops channels.
 
 ## Purpose
 
@@ -53,7 +57,7 @@ a wardrive command in it.
 | **Board** | [Scout Lite](https://www.pingequa.com/products/scout-lite?utm_source=github&utm_medium=referral&utm_campaign=pq-scout-lite-c5&utm_content=sigroam-firmware-readme) — C5 + L86 + microSD |
 | **Never** | Deauth, handshake, evil twin, SoftAP, beacon spam, `esp_wifi_80211_tx` |
 
-Receive-only is a product rule. It will not grow attack features.
+Receive-only was a rule for this earlier image. It is not a description of the firmware on current Scout Lite boards.
 
 ## Flipper wardriving compared
 
@@ -130,7 +134,7 @@ On the Flipper: **Settings → System → Log Device → Off**.
 | **SHA-256** | `525ca563fa8379ab26bc9c43010203afcaac0ac24a54042798c6d775ebd389b8` |
 | **Write** | Bootloader, partition table, and otadata are the v0.5 bytes. The new file is the app at **`0x20000`**. |
 | **FAP** | [sigroam-0.6.fap](https://github.com/pingequalab/sigroam-wardriving/releases/tag/v0.6) and `sigroam-0.6-unleashed.fap` |
-| **Flasher** | [flash.pingequa.com/devices/scout-lite](https://flash.pingequa.com/devices/scout-lite) lists the SigRoam 0.6 browser install option. |
+| **Flasher** | [flash.pingequa.com/devices/scout-lite](https://flash.pingequa.com/devices/scout-lite) no longer lists this image. It installs custom Marauder for Scout Lite. |
 
 This image observes BLE and uploads a sealed WiGLE CSV from the scanner after STOP. At boot it counts pending files once and adds a `Cfg:` line (WiGLE key present, home Wi-Fi present, home SSID) so the Flipper can show Key/Home and a pending prompt. HTTP 429 is WiGLE's daily file limit. The round stops and is not marked done.
 
@@ -193,7 +197,7 @@ A hand upload from a computer is a different path.
 ## Next (Flipper)
 
 Scout Lite stays the reference Flipper module. The Flipper stays the host.
-Receive-only stays.
+The notes below describe this earlier image only.
 
 Public direction — not a ship date, not v1.0:
 
@@ -206,14 +210,20 @@ Public direction — not a ship date, not v1.0:
 4. **Survey loop.** A sealed CSV can upload from the scanner. HTTP 429
    means WiGLE's daily file limit. You can still copy the card and upload
    at [WiGLE](https://wigle.net).
-5. **Install path.** GitHub release `v0.6`, app at `0x20000`. Browser flasher: [flash.pingequa.com/devices/scout-lite](https://flash.pingequa.com/devices/scout-lite), with SigRoam 0.6 listed.
+5. **Install path.** Do not use `v0.6` or `0x20000` on a current board. Update from [flash.pingequa.com/devices/scout-lite](https://flash.pingequa.com/devices/scout-lite).
 
 Unlisted boards are unsupported.
 
 ## Flash
 
+Current Scout Lite boards: do not run the command below. Update from
+[flash.pingequa.com/devices/scout-lite](https://flash.pingequa.com/devices/scout-lite).
+The command writes this earlier image at `0x20000` and corrupts a board
+running custom Marauder.
+
 Application partition only (`ota_0` at `0x20000`). Not a merged factory
-image. **Unplug the Flipper** before Scout Lite USB-C.
+image. **Unplug the Flipper** before Scout Lite USB-C. This command is only
+for the earlier scanner image.
 
 ```bash
 esptool --chip esp32c5 -p PORT -b 460800 write-flash 0x20000 sigroam_lite.bin
@@ -222,9 +232,9 @@ esptool --chip esp32c5 -p PORT -b 460800 write-flash 0x20000 sigroam_lite.bin
 USB-C flash and Flipper 5 V survey are exclusive. GPIO 13/14 is USB **or**
 GNSS, not both. Do not power the scanner from Flipper pin 9.
 
-Factory recover:
+Current board firmware:
 [flash.pingequa.com/devices/scout-lite](https://flash.pingequa.com/devices/scout-lite)
-(toolkit image at `0x10000` — will not install SigRoam).
+(custom Marauder for Scout Lite, app at `0x10000`).
 
 ## License
 
